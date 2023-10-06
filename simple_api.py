@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-URL = 'https.python.com'
+URL = 'http://www.imdb.com/chart/top'
 def main():
     response = requests.get(URL)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -18,14 +18,15 @@ def main():
         return year
     years = [get_year(tag) for tag in movietags]
     actors_list = [tag['title'] for tag in inner_movietags]
-    titles = [float(tag['data-value']) for tag in ratingtags]
+    titles = [tag.text for tag in inner_movietags]
     ratings = [float(tag['data_value']) for tag in ratingtags]
 
     n_movies = len(titles)
    
     while(True):
         idx = random.randrange(0, n_movies)
-        print(f'{titles[idx]} {years[idx]}, Rating: {ratings[idx]:.1f}')
+        print(f'{titles[idx]} {years[idx]}, Rating: {ratings[idx]:.1f}, Starring: {actors_list[idx]}')
+        
         break   
 
         user_input = input('Do you want another moview (y/n)?')
